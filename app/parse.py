@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from urllib.parse import urljoin
 
-from bs4 import Tag
+import requests
+from bs4 import Tag, BeautifulSoup
 
 BASE_URL = "https://webscraper.io/"
 HOME_URL = urljoin(BASE_URL, "test-sites/e-commerce/more/")
@@ -25,6 +26,10 @@ def scrape_one_product(product: Tag):
         num_of_reviews=int(product.select_one(".review-count").text.split(" ")[0])
     )
 
+
+def get_soup(url: str):
+    response = requests.get(url)
+    return BeautifulSoup(response.content, "html.parser")
 
 
 def get_all_products() -> None:
